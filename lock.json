@@ -1,6 +1,14 @@
 {
-    "memo": "1d37702350f5b5b453a2a8c2711fd19bd4668da749c9362cd80a45622d32a360",
+    "memo": "1d806c609c5604de578469310ff4a35fa4a7bf836669755da62821fa4a1881fe",
     "projects": [
+        {
+            "name": "github.com/boltdb/bolt",
+            "version": "v1.3.0",
+            "revision": "583e8937c61f1af6513608ccc75c97b6abdf4ff9",
+            "packages": [
+                "."
+            ]
+        },
         {
             "name": "github.com/gorilla/context",
             "version": "v1.1",
@@ -15,6 +23,14 @@
             "revision": "392c28fe23e1c45ddba891b0320b3b5df220beea",
             "packages": [
                 "."
+            ]
+        },
+        {
+            "name": "golang.org/x/sys",
+            "branch": "master",
+            "revision": "7a6e5648d140666db5d920909e082ca00a87ba2c",
+            "packages": [
+                "unix"
             ]
         }
     ]
