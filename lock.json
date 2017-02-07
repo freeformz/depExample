@@ -1,5 +1,5 @@
 {
-    "memo": "1d806c609c5604de578469310ff4a35fa4a7bf836669755da62821fa4a1881fe",
+    "memo": "8c4c8e5319f3441081ffdb13675a9df7420232ffb830c6b89cf786695e8776ad",
     "projects": [
         {
             "name": "github.com/boltdb/bolt",
@@ -19,7 +19,7 @@
         },
         {
             "name": "github.com/gorilla/mux",
-            "branch": "master",
+            "version": "v1.3.0",
             "revision": "392c28fe23e1c45ddba891b0320b3b5df220beea",
             "packages": [
                 "."
