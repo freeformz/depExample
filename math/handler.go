@@ -4,10 +4,9 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"fmt"
-
-	"github.com/gorilla/mux"
 )
 
 const (
@@ -20,45 +19,58 @@ type Handler struct {
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
 	header := w.Header()
-
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 
-	o, ok := vars["op"]
-	if !ok {
-		header.Add(errorHeader, "op missing")
+	p := strings.Split(strings.Trim(r.URL.EscapedPath(), "/"), "/")
+	switch len(p) {
+	case 0:
+		header.Add(errorHeader, "op {value,add,subtract} missing")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	case 2:
+		switch operation(p[0]) {
+		case add, subtract:
+			header.Add(errorHeader, "missing value")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		case value:
+		default:
+			header.Add(errorHeader, "invalid operation")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	case 3:
+		switch operation(p[0]) {
+		case add, subtract:
+		case value:
+			header.Add(errorHeader, "value requested with invalid key")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		default:
+			header.Add(errorHeader, "invalid operation")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	default:
+		header.Add(errorHeader, "Bad Request, expected /{add,subtract}/{key}/{value} or /value/{key}")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	op := operation(o)
 
-	key, ok := vars["key"]
-	if !ok {
-		header.Add(errorHeader, "key missing")
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	op := operation(p[0])
+	key := p[1]
 
 	var val, sum int
 	var err error
 	switch op {
 	case add, subtract:
-		vs, ok := vars["value"]
-		if !ok {
-			header.Add(errorHeader, "value missing")
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		val, err = strconv.Atoi(vs)
+		val, err = strconv.Atoi(p[2])
 		if err != nil {
-			header.Add(errorHeader, "error converting value: "+err.Error())
-			w.WriteHeader(http.StatusBadRequest)
-			return
+			break
 		}
 		switch op {
 		case add:
@@ -68,10 +80,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	case value:
 		sum, err = h.Calculator.Value(key)
-	default:
-		header.Add(errorHeader, "unknown op: "+string(op))
-		w.WriteHeader(http.StatusBadRequest)
-		return
 	}
 
 	if err != nil {

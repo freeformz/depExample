@@ -7,7 +7,6 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/freeformz/depExample/math"
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -18,9 +17,7 @@ func main() {
 	c := math.Calc{DB: db}
 	h := math.Handler{Calculator: &c}
 
-	r := mux.NewRouter()
-	r.Handle("/", http.FileServer(http.Dir(".")))
-	r.Handle("/math/{op}/{key}", &h)
-	r.Handle("/math/{op}/{key}/{value}", &h)
-	http.ListenAndServe(":"+os.Getenv("PORT"), r)
+	http.Handle("/", http.FileServer(http.Dir(".")))
+	http.Handle("/math/", http.StripPrefix("/math", &h))
+	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
