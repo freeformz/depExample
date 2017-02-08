@@ -1,26 +1,10 @@
 {
-    "memo": "8c4c8e5319f3441081ffdb13675a9df7420232ffb830c6b89cf786695e8776ad",
+    "memo": "b9f764612d75e53a6ef7bb0b184e66315edad77b7d205602afb492a652afc1e1",
     "projects": [
         {
             "name": "github.com/boltdb/bolt",
             "version": "v1.3.0",
             "revision": "583e8937c61f1af6513608ccc75c97b6abdf4ff9",
-            "packages": [
-                "."
-            ]
-        },
-        {
-            "name": "github.com/gorilla/context",
-            "version": "v1.1",
-            "revision": "a85d2e53ba63bdea074dbbbb5983f0516974e87b",
-            "packages": [
-                "."
-            ]
-        },
-        {
-            "name": "github.com/gorilla/mux",
-            "version": "v1.3.0",
-            "revision": "392c28fe23e1c45ddba891b0320b3b5df220beea",
             "packages": [
                 "."
             ]
